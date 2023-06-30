@@ -31,15 +31,21 @@ function generateItems(items) {
     // checkMark.innerHTML = '<img src="assets/icon-check.svg">';
     checkMark.addEventListener("click", function () {
       markCompleted(item.id);
-      console.log(item);
-      var msg = new SpeechSynthesisUtterance();
-      msg.volume = 1; // âm lượng (1 - 10)
-      msg.rate = 0.9; // tốc độ nói (0.1 - 10)
-      msg.pitch = -1; // độ cao (0 - 2)
-      msg.lang = "en-VN"; // set ngôn ngữ
-      // ở đây mình chọn tiếng anh giọng nam
-      msg.text = item?.text; // nội dung
-      speechSynthesis.speak(msg); // có đủ rồi nói thôi
+      const checkbox = document.querySelector("#checked-checkbox-phat-am");
+      const isChecked = checkbox.checked;
+
+      console.log(isChecked); // true nếu hộp kiểm được chọn, false nếu không
+
+      if (isChecked) {
+        var msg = new SpeechSynthesisUtterance();
+        msg.volume = 1; // âm lượng (1 - 10)
+        msg.rate = 0.9; // tốc độ nói (0.1 - 10)
+        msg.pitch = -1; // độ cao (0 - 2)
+        msg.lang = "en-VN"; // set ngôn ngữ
+        // ở đây mình chọn tiếng anh giọng nam
+        msg.text = item?.text; // nội dung
+        speechSynthesis.speak(msg); // có đủ rồi nói thôi
+      }
       const x = translateWord(item.text);
       //   translateWord(item.text).then(console.log); // Xin chào
     });
@@ -112,12 +118,12 @@ function translateWord(word) {
     if (xhr.readyState == 4 && xhr.status == 200) {
       var response = JSON.parse(xhr.responseText);
       var translation = response[0][0][0];
-        console.log(translation);
+      console.log(translation);
       //   return translation;
+
       Toastify({
         text: `${translation}`,
         duration: 3000,
-        destination: "https://github.com/apvarun/toastify-js",
         newWindow: true,
         close: true,
         gravity: "top", // `top` or `bottom`
